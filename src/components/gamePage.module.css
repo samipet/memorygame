@@ -1,0 +1,74 @@
+#gamearea {
+    display: flex;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+
+#gamearea > .leftcolumn {
+    flex: none;
+    width: 10%;
+    margin: 0px;
+    padding: 0px;
+}
+
+#gamearea > .rightcolumn {
+    flex: none;
+    width: 10%;
+    margin: 0px;
+    padding: 0px;
+}
+
+#gamearea > .middlecolumn {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: none;
+    width: 80%;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+
+#gamearea > .middlecolumn > .middlecolumntop {
+    flex: auto;
+    background-color: brown;
+}
+
+#gamearea > .middlecolumn > .middlecolumnmiddle {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    flex: 0 1 auto;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+
+#gamearea > .middlecolumn > .middlecolumnbottom {
+    flex: auto;
+    background-color: palevioletred;    
+}
+
+#gamearea > .middlecolumn > .middlecolumnmiddle > div {
+
+    height: 0px;
+    padding-bottom: 10%;
+    position: relative;
+    background-color: darkblue;
+}
+
+.leftcolumn {
+    background-color: red;
+}
+
+.middlecolumn {
+    background-color: khaki;
+}
+
+.rightcolumn {
+    background-color: green;
+}

@@ -1,0 +1,18 @@
+.image {
+    position: absolute;
+    user-select: none;
+    width: 100%;
+    height: 100%;
+}
+
+.ten {
+    width: 10%;
+}
+
+.eight {
+    width: 12.5%;
+}
+
+.four {
+    width: 25%;
+}
