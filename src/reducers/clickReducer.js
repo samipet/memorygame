@@ -1,7 +1,7 @@
 import { TILE_CLICK, NEW_GAME } from '../actions/types';
 
 export default (click=[], action) => {
-    switch (action.type) {       
+    switch (action.type) {
         case TILE_CLICK:
             if (action.payload.previousClick.length) {
                 if (action.payload.previousClick[0] === action.payload.x && action.payload.previousClick[1] === action.payload.y){

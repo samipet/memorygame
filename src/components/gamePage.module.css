@@ -15,7 +15,8 @@
 }
 
 #gamearea > .rightcolumn {
-    flex: none;
+    display: flex;
+    justify-content: center;
     width: 10%;
     margin: 0px;
     padding: 0px;
@@ -35,13 +36,12 @@
 
 #gamearea > .middlecolumn > .middlecolumntop {
     flex: auto;
-    background-color: brown;
 }
 
 #gamearea > .middlecolumn > .middlecolumnmiddle {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: space-around;
     flex: 0 1 auto;
     width: 100%;
     margin: 0px;
@@ -50,17 +50,29 @@
 
 #gamearea > .middlecolumn > .middlecolumnbottom {
     flex: auto;
-    background-color: palevioletred;    
 }
 
 #gamearea > .middlecolumn > .middlecolumnmiddle > div {
-
-    height: 0px;
-    padding-bottom: 10%;
+    height: 35%;
+    padding-bottom: 17%;
     position: relative;
-    background-color: darkblue;
 }
 
+.background {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+    z-index: -1;
+}
+
+.mainmenubutton {
+    position: relative;
+    top: 5%;
+    align-self: flex-start;
+    color: green;
+}
+/*
 .leftcolumn {
     background-color: red;
 }
@@ -71,4 +83,4 @@
 
 .rightcolumn {
     background-color: green;
-}
+}*/

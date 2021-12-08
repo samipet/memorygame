@@ -13,7 +13,7 @@ class Tile extends Component {
         if (this.props.crush && (prevProps.image !== this.props.image)) {
             setTimeout(() => {
                 this.props.crushTiles(this.props);
-            }, tileCrushDelay); 
+            }, tileCrushDelay);
         }
     }
 
@@ -26,20 +26,29 @@ class Tile extends Component {
                 <div className={((this.props.boardSize[0] === 4) ? tileStyle.four : tileStyle.eight)} key={this.props.x + " " + this.props.y}>
                     <img className={tileStyle.image} src={img_empty} alt="tile"/>
                 </div>
-            );            
+            );
         }
         else if (this.props.image === "crush") {
             return (
                 <div className={((this.props.boardSize[0] === 4) ? tileStyle.four : tileStyle.eight)} key={this.props.x + " " + this.props.y}>
                     <img className={tileStyle.image} src={img_crush} alt="tile"/>
                 </div>
-            );            
-        }  
-        return (
-            <div className={((this.props.boardSize[0] === 4) ? tileStyle.four : tileStyle.eight)} key={this.props.x + " " + this.props.y} onClick={() => {if(!this.props.fall) {this.props.tileClick(this.props)}}}>
-                <img className={tileStyle.image} src={'https://cataas.com/cat/' + this.props.image} alt="tile"/>
-            </div>
-        );
+            );
+        }
+        if (this.props.imageProvider === 1) {
+            return (
+                <div className={((this.props.boardSize[0] === 4) ? tileStyle.four : tileStyle.eight)} key={this.props.x + " " + this.props.y} onClick={() => {if(!this.props.fall) {this.props.tileClick(this.props)}}}>
+                    <img className={tileStyle.image} src={'https://cataas.com/cat/' + this.props.image} alt="tile"/>
+                </div>
+            );
+        }
+        if (this.props.imageProvider === 2 || this.props.imageProvider === 3 || this.props.imageProvider === 4 || this.props.imageProvider === 5 || this.props.imageProvider === 6) {
+            return (
+                <div className={((this.props.boardSize[0] === 4) ? tileStyle.four : tileStyle.eight)} key={this.props.x + " " + this.props.y} onClick={() => {if(!this.props.fall) {this.props.tileClick(this.props)}}}>
+                    <img className={tileStyle.image} src={this.props.image} alt="tile"/>
+                </div>
+            );
+        }
     }
 }
 
@@ -48,8 +57,9 @@ const mapStateToProps = (state) => {
         boardSize: state.boardSize,
         board: state.board,
         previousClick: state.previousClick,
-        crush: state.crush
+        crush: state.crush,
+        imageProvider: state.imageProvider
     }
 }
- 
+
 export default connect(mapStateToProps, { crushTiles: crushTiles })(Tile);

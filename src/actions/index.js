@@ -1,5 +1,5 @@
 import { CHANGE_BOARD_SIZE, boardSizeX, boardSizeY, boardSizeZ } from './types';
-import { TILE_CLICK, NEW_GAME, CRUSH_TILES } from './types';
+import { TILE_CLICK, NEW_GAME, CRUSH_TILES, CHANGE_IMAGE_PROVIDER } from './types';
 
 export const getBoard = (boardSize) => {
     return {
@@ -8,9 +8,9 @@ export const getBoard = (boardSize) => {
     }
 }
 
-const createBoard = (cats) => {
+const createBoard = (images) => {
     let board = new Array(boardSizeX).fill("empty").map(() => new Array(boardSizeY).fill("empty").map(() => new Array(1).fill("empty")));
-    cats.forEach(element => {
+    images.forEach(element => {
         let i, j = 0;
         let k, l = 0;
         let counter = 2;
@@ -18,16 +18,15 @@ const createBoard = (cats) => {
         let item = [];
         let items = [];
         let swappable = [];
-
         do {
             i = Math.floor(Math.random() * boardSizeX);
             j = Math.floor(Math.random() * boardSizeY);
             if (board[i][j].length < boardSizeZ + 1) {
-                //swap to prevent the last cat pair ending on top of each other
+                //swap to prevent the last image pair ending on top of each other
                 if (board[i][j][0] === element) {
                     for (k=0; k<boardSizeX; k++) {
                         for (l=0; l<boardSizeY; l++) {
-                            items.push(board[k][l][0]); 
+                            items.push(board[k][l][0]);
                         }
                     }
                     //only non-unique top images swappable to avoid entanglement
@@ -44,7 +43,7 @@ const createBoard = (cats) => {
                             l = Math.floor(Math.random() * boardSizeY);
                         } while (board[k][l][0] === element);
                         board[k][l].unshift(element);
-                        counter--;                        
+                        counter--;
                     }
                     else {
                         do {
@@ -68,14 +67,13 @@ const createBoard = (cats) => {
                     counter--;
                 }
             }
-        } while(counter);            
-    });     
-    console.log(board);
+        } while(counter);
+    });
     return board;
 }
 
-export const newGame = (cats) => {
-    const board = createBoard(cats);
+export const newGame = (images) => {
+    const board = createBoard(images);
     return {
         type: NEW_GAME,
         payload: {
@@ -85,7 +83,6 @@ export const newGame = (cats) => {
 }
 
 export const crushTiles = (props) => {
-
     return {
         type: CRUSH_TILES,
         payload: {
@@ -97,7 +94,6 @@ export const crushTiles = (props) => {
 }
 
 export const tileClick = (props) => {
-
     return {
         type: TILE_CLICK,
         payload: {
@@ -105,6 +101,15 @@ export const tileClick = (props) => {
             y: props.y,
             board: props.board,
             previousClick: props.previousClick
+        }
+    }
+}
+
+export const changeImageProvider = (value) => {
+    return {
+        type: CHANGE_IMAGE_PROVIDER,
+        payload: {
+            imageProvider: value
         }
     }
 }
