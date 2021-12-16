@@ -5,14 +5,22 @@
     height: 100%;
 }
 
-.ten {
-    width: 10%;
+.four {
+    width: 25%;
+}
+
+.five {
+    width: 20%;
+}
+
+.six {
+    width: 16.66%;
 }
 
 .eight {
     width: 12.5%;
 }
 
-.four {
-    width: 25%;
+.ten {
+    width: 10%;
 }

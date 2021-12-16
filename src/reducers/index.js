@@ -5,6 +5,10 @@ import clickReducer from './clickReducer';
 import previousClickReducer from './previousClickReducer';
 import crushReducer from './crushReducer';
 import imageProviderReducer from './imageProviderReducer';
+import imagesLoadedReducer from './imagesLoadedReducer';
+import coverReducer from './coverReducer';
+import coverBoardReducer from './coverBoardReducer';
+import victoryReducer from './victoryReducer';
 
 export default combineReducers({
     imageProvider: imageProviderReducer,
@@ -12,5 +16,9 @@ export default combineReducers({
     board: boardReducer,
     click: clickReducer,
     previousClick: previousClickReducer,
-    crush: crushReducer
+    crush: crushReducer,
+    imagesLoaded: imagesLoadedReducer,
+    cover: coverReducer,
+    coverBoard: coverBoardReducer,
+    victory: victoryReducer
 });

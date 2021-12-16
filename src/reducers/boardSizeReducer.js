@@ -1,10 +1,9 @@
-import { CHANGE_BOARD_SIZE, boardSizeX, boardSizeY } from '../actions/types';
+import { CHANGE_BOARD_SIZE, boardSizeX, boardSizeY, boardSizeZ } from '../actions/types';
 
-export default (boardSize=[boardSizeX, boardSizeY], action) => {
+export default (boardSize=[boardSizeX, boardSizeY, boardSizeZ], action) => {
     switch (action.type) {
         case CHANGE_BOARD_SIZE:
-            //not used
-            return boardSize;
+            return action.payload.boardSize;
         default:
             return boardSize;
     }

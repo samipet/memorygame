@@ -38,7 +38,27 @@
     flex: auto;
 }
 
-#gamearea > .middlecolumn > .middlecolumnmiddle {
+#gamearea > .middlecolumn > .middlecolumnmiddle3 {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    flex: 0 1 auto;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+
+#gamearea > .middlecolumn > .middlecolumnmiddle4 {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    flex: 0 1 auto;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+
+#gamearea > .middlecolumn > .middlecolumnmiddle5 {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
@@ -52,9 +72,21 @@
     flex: auto;
 }
 
-#gamearea > .middlecolumn > .middlecolumnmiddle > div {
+#gamearea > .middlecolumn > .middlecolumnmiddle3 > div {
     height: 35%;
     padding-bottom: 17%;
+    position: relative;
+}
+
+#gamearea > .middlecolumn > .middlecolumnmiddle4 > div {
+    height: 20%;
+    padding-bottom: 15%;
+    position: relative;
+}
+
+#gamearea > .middlecolumn > .middlecolumnmiddle5 > div {
+    height: 15%;
+    padding-bottom: 11%;
     position: relative;
 }
 
@@ -72,15 +104,57 @@
     align-self: flex-start;
     color: green;
 }
-/*
-.leftcolumn {
-    background-color: red;
+
+.loadingimages {
+    width: 100%;
+    z-index: 10;
 }
 
-.middlecolumn {
-    background-color: khaki;
+.loadingdone {
+    width: 0%;
+    z-index: -2;
 }
 
-.rightcolumn {
-    background-color: green;
-}*/
+.victory {
+    position: fixed;
+    width: 80%;
+    top: -40%;
+    z-index: 10;
+}
+
+.victory > h2 {
+    position: fixed;
+    width: 80%;
+    top: 80%;
+    font-size: 4em;
+    font-family: Arial, Helvetica, sans-serif;
+    color: red;
+    z-index: 10;
+}
+
+.notvictory {
+    width: 0%;
+    z-index: -2;
+}
+
+.progress {
+    position: fixed;
+    width: 80%;
+    top: 80%;
+    left: 50%;
+    margin-left: -40%;
+    z-index: 11;
+}
+
+.progress > h2 {
+    font-size: 3em;
+    font-family: Arial, Helvetica, sans-serif;
+    color: yellow;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;    
+    z-index: 10;
+}
+
+.progressdone {
+    width: 0%;
+    z-index: -1;
+}

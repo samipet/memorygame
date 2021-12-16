@@ -5,3 +5,11 @@
     display: inline-block;
     z-index: -1;
 }
+
+.warningmessage {
+    color:yellow;
+}
+
+.hidden {
+    visibility: hidden;
+}
