@@ -7,6 +7,7 @@ export const CRUSH_TILES = 'CRUSH_TILES';
 export const IMAGE_LOADED = 'IMAGE_LOADED';
 export const CHANGE_COVER = 'CHANGE_COVER';
 export const SET_VICTORY = 'SET_VICTORY';
+export const CLEAR_BOARD = 'CLEAR_BOARD';
 
 export const IMAGES_AVAILABLE = [0, 740, 1677, 123, 119, 20634, 67];
 export const IMAGE_PROVIDER = 1;

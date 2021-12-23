@@ -1,4 +1,4 @@
-import { TILE_CLICK, NEW_GAME, CRUSH_TILES, CHANGE_IMAGE_PROVIDER, IMAGE_LOADED, CHANGE_COVER, CHANGE_BOARD_SIZE, SET_VICTORY } from './types';
+import { TILE_CLICK, NEW_GAME, CRUSH_TILES, CHANGE_IMAGE_PROVIDER, IMAGE_LOADED, CHANGE_COVER, CHANGE_BOARD_SIZE, SET_VICTORY, CLEAR_BOARD } from './types';
 
 const createBoard = (images, boardSize) => {
     let board = new Array(boardSize[0]).fill("empty").map(() => new Array(boardSize[1]).fill("empty").map(() => new Array(1).fill("empty")));
@@ -69,7 +69,8 @@ export const newGame = (images, boardSize) => {
     return {
         type: NEW_GAME,
         payload: {
-            board: board
+            board: board,
+            boardSize: boardSize
         }
     }
 }
@@ -94,6 +95,15 @@ export const imageLoaded = (props) => {
             y: props.y,
         }
     }
+}
+
+export const clearBoard = (props) => {
+    return {
+        type: CLEAR_BOARD,
+        payload: {
+            boardSize: props.boardSize
+        }
+    }    
 }
 
 export const tileClick = (props) => {

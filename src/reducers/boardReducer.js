@@ -1,4 +1,4 @@
-import { NEW_GAME, TILE_CLICK, CRUSH_TILES, CHANGE_BOARD_SIZE } from '../actions/types';
+import { NEW_GAME, TILE_CLICK, CRUSH_TILES, CHANGE_BOARD_SIZE, CLEAR_BOARD } from '../actions/types';
 import { boardSizeX, boardSizeY } from '../actions/types';
 
 export default (board = new Array(boardSizeX).fill("empty").map(() => new Array(boardSizeY).fill("empty").map(() => new Array(1).fill("empty"))), action) => {
@@ -19,8 +19,11 @@ export default (board = new Array(boardSizeX).fill("empty").map(() => new Array(
             return newBoard2;
         case CHANGE_BOARD_SIZE:
             return new Array(action.payload.boardSize[0]).fill("empty").map(() => new Array(action.payload.boardSize[1]).fill("empty").map(() => new Array(1).fill("empty")));
+        case CLEAR_BOARD:
+            return new Array(action.payload.boardSize[0]).fill("empty2").map(() => new Array(action.payload.boardSize[1]).fill("empty2").map(() => new Array(1).fill("empty2")));
         case NEW_GAME:
-            return [...action.payload.board];
+            let newBoard3 = action.payload.board.map(item => { return [...item.map(item => { return [...item]})]}); //spreading multidimensinal array
+            return newBoard3;
         default:
             return board;
     }

@@ -8,8 +8,9 @@ import boardStyle from './gamePage.module.css';
 import gameBackground from '../assets/gameBackground.JPG';
 import loadingImages from '../assets/loading_images.jpg';
 import loadingCats from '../assets/loading_cats.jpg';
+import loadingFoxes from '../assets/loading_foxes.jpg';
 import fireworks from '../assets/victory.gif';
-import { tileClick, newGame, setVictory } from '../actions';
+import { tileClick, newGame, setVictory, clearBoard } from '../actions';
 import { Progress } from "reactstrap"
 
 class GamePage extends Component {
@@ -146,6 +147,11 @@ class GamePage extends Component {
         }
     }
 
+    toMainMenu () {
+        this.props.clearBoard(this.props);
+        this.props.history.push("/");      
+    }
+
     componentDidUpdate(prevProps) {
         let victory = !this.props.board.flat(2).some(element => element !== "empty");
         if (victory) {
@@ -170,6 +176,17 @@ class GamePage extends Component {
                 }
             default:
                 return "Loading Images";
+        }
+    }
+
+    loadingImages() {
+        switch (this.props.imageProvider) {
+            case 1: case 2: case 6:
+                return loadingCats;
+            case 3:
+                return loadingFoxes;
+            default:
+                return loadingImages;
         }
     }
 
@@ -201,7 +218,7 @@ class GamePage extends Component {
                                 <h2 className="text-center">{this.loadingTexts()}</h2>
                                 <Progress value={Math.floor(this.props.imagesLoaded / (this.props.boardSize[0] * this.props.boardSize[1]) * 100)}></Progress>
                             </div>
-                            <img className={((this.props.imagesLoaded < this.props.boardSize[0] * this.props.boardSize[1]) ? boardStyle.loadingimages : boardStyle.loadingdone)} src={((this.props.imageProvider === 1 || this.props.imageProvider === 2 || this.props.imageProvider === 6) ? loadingCats : loadingImages)} alt="loadingImages"/>
+                            <img className={((this.props.imagesLoaded < this.props.boardSize[0] * this.props.boardSize[1]) ? boardStyle.loadingimages : boardStyle.loadingdone)} src={this.loadingImages()} alt="loadingImages"/>
                         </a>
                         <a className={((this.props.victory) ? boardStyle.victory : boardStyle.notvictory)}>                        
                             <img className={((this.props.victory) ? boardStyle.victory : boardStyle.notvictory)} src={fireworks} alt="fireworks"/>
@@ -212,7 +229,7 @@ class GamePage extends Component {
                     <div className={boardStyle.middlecolumnbottom}></div>
                 </Col>
                 <Col className={boardStyle.rightcolumn}>
-                    <Button className={boardStyle.mainmenubutton} onClick={() => {this.props.history.push("/")}} color="success">Main Menu</Button>
+                    <Button className={boardStyle.mainmenubutton} onClick={() => this.toMainMenu()} color="success">Main Menu</Button>
                 </Col>
             </Row>
         );
@@ -229,4 +246,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default withRouter(connect(mapStateToProps, { tileClick: tileClick, newGame: newGame, setVictory: setVictory })(GamePage));
+export default withRouter(connect(mapStateToProps, { tileClick: tileClick, newGame: newGame, setVictory: setVictory, clearBoard: clearBoard })(GamePage));

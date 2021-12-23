@@ -1,4 +1,4 @@
-import { boardSizeX, boardSizeY, CHANGE_BOARD_SIZE, TILE_CLICK, CRUSH_TILES } from '../actions/types';
+import { boardSizeX, boardSizeY, CHANGE_BOARD_SIZE, TILE_CLICK, CRUSH_TILES, NEW_GAME } from '../actions/types';
 
 export default (coverBoard = new Array(boardSizeX).fill(1).map(() => new Array(boardSizeY).fill(1)), action) => {
     switch (action.type) {
@@ -21,6 +21,8 @@ export default (coverBoard = new Array(boardSizeX).fill(1).map(() => new Array(b
                 coverArray2[action.payload.x][action.payload.y] = 0;
                 return coverArray2;
             }
+        case NEW_GAME:
+            return new Array(action.payload.boardSize[0]).fill(1).map(() => new Array(action.payload.boardSize[1]).fill(1));
         case CRUSH_TILES:
             return new Array(action.payload.boardSize[0]).fill(1).map(() => new Array(action.payload.boardSize[1]).fill(1));
         default:

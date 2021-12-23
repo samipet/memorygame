@@ -36,10 +36,10 @@ class Tile extends Component {
     }
 
     render() {
-        if (!this.props.image || !this.props.boardSize || this.props.imageLoaded < this.props.boardSize[0] * this.props.boardSize[1]) {
+        if (!this.props.image || !this.props.boardSize) {
             return <div>Loading...</div>
         }
-        else if (this.props.image === "empty") {
+        else if (this.props.image === "empty" || this.props.image === "empty2") {
             return (
                 <div className={this.getTileStyle(this.props.boardSize[0])} key={this.props.x + " " + this.props.y}>
                     <img className={tileStyle.image} src={img_empty} alt="tile"/>
@@ -53,7 +53,7 @@ class Tile extends Component {
                 </div>
             );
         }
-        if (this.props.coverBoard[this.props.x][this.props.y] === 1 && this.props.imagesLoaded >= this.props.boardSize[0] * this.props.boardSize[1] && this.props.cover) {
+        else if (this.props.coverBoard[this.props.x][this.props.y] === 1 && this.props.imagesLoaded >= this.props.boardSize[0] * this.props.boardSize[1] && this.props.cover) {
             return (
                 <div className={this.getTileStyle(this.props.boardSize[0])} key={this.props.x + " " + this.props.y} onClick={() => {if(!this.props.fall) {this.props.tileClick(this.props)}}}>
                     <img className={tileStyle.image} src={img_cover} alt="tile"/>
@@ -70,7 +70,7 @@ class Tile extends Component {
         else if (this.props.imageProvider === 2 || this.props.imageProvider === 3 || this.props.imageProvider === 4 || this.props.imageProvider === 5 || this.props.imageProvider === 6) {
             return (
                 <div className={this.getTileStyle(this.props.boardSize[0])} key={this.props.x + " " + this.props.y} onClick={() => {if(!this.props.fall) {this.props.tileClick(this.props)}}}>
-                    <img className={tileStyle.image} src={this.props.image} alt="tile" onLoad={() => this.props.imageLoaded(this.props)}/>
+                    <img className={tileStyle.image} src={this.props.image} alt="tile" onLoad={() => {if(this.props.board.flat(2).length === this.props.boardSize[0]*this.props.boardSize[1]*(this.props.boardSize[2] + 1)) {this.props.imageLoaded(this.props)}}}/>
                 </div>
             );
         }
