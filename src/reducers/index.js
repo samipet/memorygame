@@ -9,6 +9,8 @@ import imagesLoadedReducer from './imagesLoadedReducer';
 import coverReducer from './coverReducer';
 import coverBoardReducer from './coverBoardReducer';
 import victoryReducer from './victoryReducer';
+import allowImagesReducer from './allowImagesReducer';
+import rejectedImagesReducer from './rejectedImagesReducer';
 
 export default combineReducers({
     imageProvider: imageProviderReducer,
@@ -20,5 +22,7 @@ export default combineReducers({
     imagesLoaded: imagesLoadedReducer,
     cover: coverReducer,
     coverBoard: coverBoardReducer,
-    victory: victoryReducer
+    victory: victoryReducer,
+    allowImages: allowImagesReducer,
+    rejectedImages: rejectedImagesReducer
 });

@@ -1,4 +1,4 @@
-import { TILE_CLICK, NEW_GAME, CRUSH_TILES, CHANGE_IMAGE_PROVIDER, IMAGE_LOADED, CHANGE_COVER, CHANGE_BOARD_SIZE, SET_VICTORY, CLEAR_BOARD } from './types';
+import { TILE_CLICK, NEW_GAME, CRUSH_TILES, CHANGE_IMAGE_PROVIDER, IMAGE_LOADED, CHANGE_COVER, CHANGE_BOARD_SIZE, SET_VICTORY, CLEAR_BOARD, ALLOW_IMAGES, REJECT_IMAGE, ADD_IMAGES } from './types';
 
 const createBoard = (images, boardSize) => {
     let board = new Array(boardSize[0]).fill("empty").map(() => new Array(boardSize[1]).fill("empty").map(() => new Array(1).fill("empty")));
@@ -97,11 +97,37 @@ export const imageLoaded = (props) => {
     }
 }
 
+export const addRejectedImages = (count) => {
+    return {
+        type: ADD_IMAGES,
+        payload: {
+            count: count
+        }
+    }
+}
+
 export const clearBoard = (props) => {
     return {
         type: CLEAR_BOARD,
         payload: {
             boardSize: props.boardSize
+        }
+    }    
+}
+
+export const allowImages = () => {
+    return {
+        type: ALLOW_IMAGES,
+        payload: {
+        }
+    }    
+}
+
+export const rejectImage = (image) => {
+    return {
+        type: REJECT_IMAGE,
+        payload: {
+            image: image
         }
     }    
 }

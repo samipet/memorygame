@@ -10,7 +10,8 @@ import loadingImages from '../assets/loading_images.jpg';
 import loadingCats from '../assets/loading_cats.jpg';
 import loadingFoxes from '../assets/loading_foxes.jpg';
 import fireworks from '../assets/victory.gif';
-import { tileClick, newGame, setVictory, clearBoard } from '../actions';
+import { tileClick, newGame, setVictory, clearBoard, allowImages, addRejectedImages } from '../actions';
+import { IMAGE_REJECT_TIME, IMAGE_ADD_TIME } from '../actions/types';
 import { Progress } from "reactstrap"
 
 class GamePage extends Component {
@@ -75,6 +76,9 @@ class GamePage extends Component {
                 const images = this.preloadImages(preloadUrls);
                 console.log("preloadImages: ", images);
                 this.props.newGame(cats, this.props.boardSize);
+                setTimeout (() => {
+                    this.props.allowImages();
+                }, IMAGE_REJECT_TIME);
             })
         }
         //1677 images available
@@ -83,6 +87,9 @@ class GamePage extends Component {
                 const preloadImages = this.preloadImages(images);
                 console.log("preloadImages: ", preloadImages);
                 this.props.newGame(images, this.props.boardSize);
+                setTimeout (() => {
+                    this.props.allowImages();
+                }, IMAGE_REJECT_TIME);
             });
         }
         //123 images available
@@ -100,6 +107,9 @@ class GamePage extends Component {
             const images = this.preloadImages(foxes);
             console.log("preloadImages: ", images);
             this.props.newGame(foxes, this.props.boardSize);
+            setTimeout (() => {
+                this.props.allowImages();
+            }, IMAGE_REJECT_TIME);
         }
         //119 images available
         if(this.props.imageProvider === 4) {
@@ -116,6 +126,9 @@ class GamePage extends Component {
             const images = this.preloadImages(ducks);
             console.log("preloadImages: ", images);
             this.props.newGame(ducks, this.props.boardSize);
+            setTimeout (() => {
+                this.props.allowImages();
+            }, IMAGE_REJECT_TIME);
         }
         //20634 images available
         if(this.props.imageProvider === 5) {
@@ -125,6 +138,9 @@ class GamePage extends Component {
                 const images = this.preloadImages(dogs);
                 console.log("preloadImages: ", images);
                 this.props.newGame(dogs, this.props.boardSize);
+                setTimeout (() => {
+                    this.props.allowImages();
+                }, IMAGE_REJECT_TIME);
             })
         }
         //67 images available
@@ -144,7 +160,28 @@ class GamePage extends Component {
             const images = this.preloadImages(cats);
             console.log("preloadImages: ", images);
             this.props.newGame(cats, this.props.boardSize);
+            setTimeout (() => {
+                this.props.allowImages();
+            }, IMAGE_REJECT_TIME);
         }
+        setTimeout(() => {
+            let count = 0;
+            let image = "";
+            let topImages = [];
+            let rejected = (this.props.rejectedImages) ? [...this.props.rejectedImages] : [];
+            for (let i=0; i<this.props.boardSize[0]; i++) {
+                for (let j=0; j<this.props.boardSize[1]; j++) {
+                    topImages.push(this.props.board[i][j][0]);
+                }
+            }
+            while (topImages.length) {
+                image = topImages.pop();
+                if (rejected.includes(image)) {
+                    count++;
+                }
+            }
+            this.props.addRejectedImages(count);
+        }, IMAGE_ADD_TIME);
     }
 
     toMainMenu () {
@@ -242,8 +279,9 @@ const mapStateToProps = (state) => {
         board: state.board,
         imageProvider: state.imageProvider,
         imagesLoaded: state.imagesLoaded,
-        victory: state.victory
+        victory: state.victory,
+        rejectedImages: state.rejectedImages
     }
 }
 
-export default withRouter(connect(mapStateToProps, { tileClick: tileClick, newGame: newGame, setVictory: setVictory, clearBoard: clearBoard })(GamePage));
+export default withRouter(connect(mapStateToProps, { tileClick: tileClick, newGame: newGame, setVictory: setVictory, clearBoard: clearBoard, allowImages: allowImages, addRejectedImages: addRejectedImages })(GamePage));

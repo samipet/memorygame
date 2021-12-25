@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { crushTiles, imageLoaded } from '../actions';
+import { crushTiles, imageLoaded, rejectImage } from '../actions';
 import tileStyle from './tile.module.css';
 import { tileCrushDelay } from '../actions/types';
 
@@ -63,14 +63,14 @@ class Tile extends Component {
         else if (this.props.imageProvider === 1 ) {
             return (
                 <div className={this.getTileStyle(this.props.boardSize[0])} key={this.props.x + " " + this.props.y} onClick={() => {if(!this.props.fall) {this.props.tileClick(this.props)}}}>
-                    <img className={tileStyle.image} src={'https://cataas.com/cat/' + this.props.image} alt="tile" onLoad={() => this.props.imageLoaded(this.props)}/>
+                    <img className={tileStyle.image} src={'https://cataas.com/cat/' + this.props.image} alt="tile" onLoad={() => {(this.props.allowImages) ? this.props.imageLoaded(this.props) : this.props.rejectImage(this.props.image)}}/>
                 </div>
             );
         }
         else if (this.props.imageProvider === 2 || this.props.imageProvider === 3 || this.props.imageProvider === 4 || this.props.imageProvider === 5 || this.props.imageProvider === 6) {
             return (
                 <div className={this.getTileStyle(this.props.boardSize[0])} key={this.props.x + " " + this.props.y} onClick={() => {if(!this.props.fall) {this.props.tileClick(this.props)}}}>
-                    <img className={tileStyle.image} src={this.props.image} alt="tile" onLoad={() => {if(this.props.board.flat(2).length === this.props.boardSize[0]*this.props.boardSize[1]*(this.props.boardSize[2] + 1)) {this.props.imageLoaded(this.props)}}}/>
+                    <img className={tileStyle.image} src={this.props.image} alt="tile" onLoad={() => {(this.props.allowImages) ? this.props.imageLoaded(this.props) : this.props.rejectImage(this.props.image)}}/>
                 </div>
             );
         }
@@ -86,8 +86,9 @@ const mapStateToProps = (state) => {
         imageProvider: state.imageProvider,
         imagesLoaded: state.imagesLoaded,
         cover: state.cover,
-        coverBoard: state.coverBoard
+        coverBoard: state.coverBoard,
+        allowImages: state.allowImages
     }
 }
 
-export default connect(mapStateToProps, { crushTiles: crushTiles, imageLoaded: imageLoaded })(Tile);
+export default connect(mapStateToProps, { crushTiles: crushTiles, imageLoaded: imageLoaded, rejectImage: rejectImage })(Tile);
