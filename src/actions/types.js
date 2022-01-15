@@ -11,11 +11,15 @@ export const CLEAR_BOARD = 'CLEAR_BOARD';
 export const ALLOW_IMAGES = 'ALLOW_IMAGES';
 export const REJECT_IMAGE = 'REJECT_IMAGE';
 export const ADD_IMAGES = 'ADD_IMAGES';
+export const REMOVE_REJECTED_IMAGES = 'REMOVE_REJECTED_IMAGES';
 
 export const IMAGES_AVAILABLE = [0, 740, 1677, 123, 119, 20634, 67];
 export const IMAGE_PROVIDER = 1;
+
+//To prevent miscalculating loaded images there is reject time for already cached images. Later checking if these rejected images truly are top images and should be calculated.
 export const IMAGE_REJECT_TIME = 100;
-export const IMAGE_ADD_TIME = 1000;
+export const IMAGE_ADD_TIME = 3000;
+export const IMAGE_ADD_TIME2 = 8000;
 
 export const boardSizeX = 4; //4, 5, 6, 8 and 10 supported
 export const boardSizeY = 3; //3, 4 and 5 supported

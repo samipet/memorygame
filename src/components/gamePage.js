@@ -10,8 +10,8 @@ import loadingImages from '../assets/loading_images.jpg';
 import loadingCats from '../assets/loading_cats.jpg';
 import loadingFoxes from '../assets/loading_foxes.jpg';
 import fireworks from '../assets/victory.gif';
-import { tileClick, newGame, setVictory, clearBoard, allowImages, addRejectedImages } from '../actions';
-import { IMAGE_REJECT_TIME, IMAGE_ADD_TIME } from '../actions/types';
+import { tileClick, newGame, setVictory, clearBoard, allowImages, addRejectedImages, removeRejectedImages } from '../actions';
+import { IMAGE_REJECT_TIME, IMAGE_ADD_TIME, IMAGE_ADD_TIME2 } from '../actions/types';
 import { Progress } from "reactstrap"
 
 class GamePage extends Component {
@@ -63,6 +63,23 @@ class GamePage extends Component {
             })
         } while (images.length !== (this.props.boardSize[0] * this.props.boardSize[1] * this.props.boardSize[2])/2);
         return images;
+    }
+
+    getDogs = async () => {
+        let dogs = [];
+        let responses = [];
+        do {
+            responses = await axios.get(`https://dog.ceo/api/breeds/image/random/` + ((this.props.boardSize[0] * this.props.boardSize[1] * this.props.boardSize[2])/2 - dogs.length)).then(res => {
+                return res.data.message;
+            })
+            dogs.push(...responses.filter(image => !dogs.includes(image)));
+        } while (dogs.length !== (this.props.boardSize[0] * this.props.boardSize[1] * this.props.boardSize[2])/2);
+        const images = this.preloadImages(dogs);
+        console.log("preloadImages: ", images);
+        this.props.newGame(dogs, this.props.boardSize);
+        setTimeout (() => {
+            this.props.allowImages();
+        }, IMAGE_REJECT_TIME);
     }
 
     componentDidMount() {
@@ -132,16 +149,7 @@ class GamePage extends Component {
         }
         //20634 images available
         if(this.props.imageProvider === 5) {
-            axios.get(`https://dog.ceo/api/breeds/image/random/` + (this.props.boardSize[0] * this.props.boardSize[1] * this.props.boardSize[2])/2)
-            .then(res => {
-                let dogs = res.data.message;
-                const images = this.preloadImages(dogs);
-                console.log("preloadImages: ", images);
-                this.props.newGame(dogs, this.props.boardSize);
-                setTimeout (() => {
-                    this.props.allowImages();
-                }, IMAGE_REJECT_TIME);
-            })
+            this.getDogs();
         }
         //67 images available
         if(this.props.imageProvider === 6) {
@@ -164,10 +172,12 @@ class GamePage extends Component {
                 this.props.allowImages();
             }, IMAGE_REJECT_TIME);
         }
+        //adding rejected images
         setTimeout(() => {
             let count = 0;
             let image = "";
             let topImages = [];
+            let foundImages = [];
             let rejected = (this.props.rejectedImages) ? [...this.props.rejectedImages] : [];
             for (let i=0; i<this.props.boardSize[0]; i++) {
                 for (let j=0; j<this.props.boardSize[1]; j++) {
@@ -177,11 +187,34 @@ class GamePage extends Component {
             while (topImages.length) {
                 image = topImages.pop();
                 if (rejected.includes(image)) {
+                    foundImages.push(image);
                     count++;
                 }
             }
             this.props.addRejectedImages(count);
+            this.props.removeRejectedImages(foundImages);
         }, IMAGE_ADD_TIME);
+        setTimeout(() => {
+            let count = 0;
+            let image = "";
+            let topImages = [];
+            let foundImages = [];
+            let rejected = (this.props.rejectedImages) ? [...this.props.rejectedImages] : [];
+            for (let i=0; i<this.props.boardSize[0]; i++) {
+                for (let j=0; j<this.props.boardSize[1]; j++) {
+                    topImages.push(this.props.board[i][j][0]);
+                }
+            }
+            while (topImages.length) {
+                image = topImages.pop();
+                if (rejected.includes(image)) {
+                    foundImages.push(image);
+                    count++;
+                }
+            }
+            this.props.addRejectedImages(count);
+            this.props.removeRejectedImages(foundImages);
+        }, IMAGE_ADD_TIME2);
     }
 
     toMainMenu () {
@@ -284,4 +317,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default withRouter(connect(mapStateToProps, { tileClick: tileClick, newGame: newGame, setVictory: setVictory, clearBoard: clearBoard, allowImages: allowImages, addRejectedImages: addRejectedImages })(GamePage));
+export default withRouter(connect(mapStateToProps, { tileClick: tileClick, newGame: newGame, setVictory: setVictory, clearBoard: clearBoard, allowImages: allowImages, addRejectedImages: addRejectedImages, removeRejectedImages: removeRejectedImages })(GamePage));
