@@ -11,6 +11,7 @@ import coverBoardReducer from './coverBoardReducer';
 import victoryReducer from './victoryReducer';
 import allowImagesReducer from './allowImagesReducer';
 import rejectedImagesReducer from './rejectedImagesReducer';
+import hintReducer from './hintReducer';
 
 export default combineReducers({
     imageProvider: imageProviderReducer,
@@ -24,5 +25,6 @@ export default combineReducers({
     coverBoard: coverBoardReducer,
     victory: victoryReducer,
     allowImages: allowImagesReducer,
-    rejectedImages: rejectedImagesReducer
+    rejectedImages: rejectedImagesReducer,
+    hint: hintReducer
 });

@@ -8,7 +8,8 @@
 }
 
 #gamearea > .leftcolumn {
-    flex: none;
+    display: flex;
+    justify-content: center;
     width: 10%;
     margin: 0px;
     padding: 0px;
@@ -102,7 +103,12 @@
     position: relative;
     top: 5%;
     align-self: flex-start;
-    color: green;
+}
+
+.hintbutton {
+    position: relative;
+    top: 5%;
+    align-self: flex-start;
 }
 
 .loadingimages {

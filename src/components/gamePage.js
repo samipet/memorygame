@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { Row, Col, Button } from 'reactstrap';
+import { Row, Col, Button, Progress } from 'reactstrap';
 import Tile from './tile';
 import boardStyle from './gamePage.module.css';
 import gameBackground from '../assets/gameBackground.JPG';
@@ -10,9 +10,8 @@ import loadingImages from '../assets/loading_images.jpg';
 import loadingCats from '../assets/loading_cats.jpg';
 import loadingFoxes from '../assets/loading_foxes.jpg';
 import fireworks from '../assets/victory.gif';
-import { tileClick, newGame, setVictory, clearBoard, allowImages, addRejectedImages, removeRejectedImages } from '../actions';
+import { tileClick, newGame, setVictory, clearBoard, allowImages, addRejectedImages, removeRejectedImages, hint, resetHint } from '../actions';
 import { IMAGE_REJECT_TIME, IMAGE_ADD_TIME, IMAGE_ADD_TIME2 } from '../actions/types';
-import { Progress } from "reactstrap"
 
 class GamePage extends Component {
 
@@ -219,7 +218,12 @@ class GamePage extends Component {
 
     toMainMenu () {
         this.props.clearBoard(this.props);
+        this.props.resetHint();
         this.props.history.push("/");      
+    }
+
+    hintButtonPress () {
+        this.props.hint(this.props);
     }
 
     componentDidUpdate(prevProps) {
@@ -279,8 +283,9 @@ class GamePage extends Component {
             <Row id={boardStyle.gamearea}>
                 <img className={boardStyle.background} src={gameBackground} alt="background"/>
                 <Col className={boardStyle.leftcolumn}>
+                    <Button disabled={this.props.imagesLoaded < this.props.boardSize[0] * this.props.boardSize[1]} className={boardStyle.hintbutton} onClick={() => this.hintButtonPress()} color="warning" >Hint</Button>
                 </Col>
-                <Col className={boardStyle.middlecolumn}>                  
+                <Col className={boardStyle.middlecolumn}>
                     <div className={boardStyle.middlecolumntop}></div>                    
                     <div className={this.getMiddleColumnMiddleStyle(this.props.boardSize[1])}>
                         <a className={((this.props.imagesLoaded < this.props.boardSize[0] * this.props.boardSize[1]) ? boardStyle.loadingimages : boardStyle.loadingdone)}>                        
@@ -291,7 +296,7 @@ class GamePage extends Component {
                             <img className={((this.props.imagesLoaded < this.props.boardSize[0] * this.props.boardSize[1]) ? boardStyle.loadingimages : boardStyle.loadingdone)} src={this.loadingImages()} alt="loadingImages"/>
                         </a>
                         <a className={((this.props.victory) ? boardStyle.victory : boardStyle.notvictory)}>                        
-                            <img className={((this.props.victory) ? boardStyle.victory : boardStyle.notvictory)} src={fireworks} alt="fireworks"/>
+                            <img className={((this.props.victory && this.props.imagesLoaded >= this.props.boardSize[0] * this.props.boardSize[1]) ? boardStyle.victory : boardStyle.notvictory)} src={fireworks} alt="fireworks"/>
                             <h2 className="text-center">Victory!</h2>
                         </a>
                         {this.renderBoard()}
@@ -317,4 +322,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default withRouter(connect(mapStateToProps, { tileClick: tileClick, newGame: newGame, setVictory: setVictory, clearBoard: clearBoard, allowImages: allowImages, addRejectedImages: addRejectedImages, removeRejectedImages: removeRejectedImages })(GamePage));
+export default withRouter(connect(mapStateToProps, { tileClick: tileClick, newGame: newGame, setVictory: setVictory, clearBoard: clearBoard, allowImages: allowImages, addRejectedImages: addRejectedImages, removeRejectedImages: removeRejectedImages, hint: hint, resetHint: resetHint })(GamePage));
