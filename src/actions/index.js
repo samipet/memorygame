@@ -1,65 +1,43 @@
-import { TILE_CLICK, NEW_GAME, CRUSH_TILES, CHANGE_IMAGE_PROVIDER, IMAGE_LOADED, CHANGE_COVER, CHANGE_BOARD_SIZE, SET_VICTORY, CLEAR_BOARD, ALLOW_IMAGES, REJECT_IMAGE, ADD_IMAGES, REMOVE_REJECTED_IMAGES, CHANGE_HINT, RESET_HINT } from './types';
+import { TILE_CLICK, NEW_GAME, CRUSH_TILES, CHANGE_IMAGE_PROVIDER, IMAGE_LOADED, CHANGE_COVER, CHANGE_BOARD_SIZE, SET_VICTORY, CLEAR_BOARD, ALLOW_IMAGES, REJECT_IMAGE, ADD_IMAGES, REMOVE_REJECTED_IMAGES, CHANGE_HINT, RESET_HINT, boardSizeZ } from './types';
 
 const createBoard = (images, boardSize) => {
     let board = new Array(boardSize[0]).fill("empty").map(() => new Array(boardSize[1]).fill("empty").map(() => new Array(1).fill("empty")));
-    images.forEach(element => {
+    images.forEach((element, imageindex) => {
         let i, j = 0;
-        let k, l = 0;
-        let counter = 2;
-        let swap = "";
-        let item = [];
-        let items = [];
-        let swappable = [];
+        let counter = 2; //images to be added
+        let deepestHole = 0; //largest number of missing images for a tile on the board
+        for (let m = 0;m<boardSize[0];m++) {
+            for (let n = 0;n<boardSize[1];n++) {
+                if (boardSize[2] - (board[m][n].length - 1) > deepestHole) {
+                    deepestHole = boardSize[2] - (board[m][n].length - 1);
+
+                }
+            }
+        }
+        //add 1. image of the pair
         do {
             i = Math.floor(Math.random() * boardSize[0]);
             j = Math.floor(Math.random() * boardSize[1]);
-            if (board[i][j].length < boardSize[2] + 1) {
-                //swap to prevent the last image pair ending on top of each other
-                if (board[i][j][0] === element) {
-                    for (k=0; k<boardSize[0]; k++) {
-                        for (l=0; l<boardSize[1]; l++) {
-                            items.push(board[k][l][0]);
-                        }
-                    }
-                    //only non-unique top images swappable to avoid entanglement
-                    do {
-                        item = items.shift();
-                        if (items.includes(item) && !swappable.includes(item)) {
-                            swappable.push(item);
-                        }
-                    } while (items.length);
-                    //in rare case when risk of entanglement of image pairs, depth limit is allowed to exceed vs repopulating board
-                    if (!swappable.length) {
-                        do {
-                            k = Math.floor(Math.random() * boardSize[0]);
-                            l = Math.floor(Math.random() * boardSize[1]);
-                        } while (board[k][l][0] === element);
-                        board[k][l].unshift(element);
-                        counter--;
-                    }
-                    else {
-                        do {
-                            k = Math.floor(Math.random() * boardSize[0]);
-                            l = Math.floor(Math.random() * boardSize[1]);
-                            swap = board[k][l][0];
-                        } while(!swappable.includes(swap) && swap !== "empty");
-                        if (swap === "empty") {
-                            board[k][l].unshift(element);
-                            counter--;
-                        }
-                    else {
-                        board[i][j].unshift(swap);
-                        board[k][l][0] = element;
-                        counter--;
-                        }
-                    }
-                }
-                else {
+            //with the last image pairs the tile missing most images will be filled to prevent image entanglement
+            if (boardSize[0]*boardSize[1]*boardSize[2]/2 - imageindex === deepestHole && boardSize[2] - (board[i][j].length - 1) < deepestHole) {
+                //was not the deepest hole
+            }
+            //check there is space in z-direction
+            else if (board[i][j].length < boardSize[2] + 1) {
                     board[i][j].unshift(element);
                     counter--;
-                }
             }
-        } while(counter);
+        } while(counter === 2);
+        //add 2. image of the pair
+        do {
+            i = Math.floor(Math.random() * boardSize[0]);
+            j = Math.floor(Math.random() * boardSize[1]);
+            //check there is space in z-direction and 2. image won't go on top of 1. image
+            if (board[i][j].length < boardSize[2] + 1 && board[i][j][0] !== element) {
+                    board[i][j].unshift(element);
+                    counter--;
+            }
+        } while(counter === 1);
     });
     return board;
 }

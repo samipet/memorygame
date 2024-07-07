@@ -81,12 +81,31 @@ class GamePage extends Component {
         }, IMAGE_REJECT_TIME);
     }
 
+    getDogs2 = async () => {
+        let dogs = [];
+        let response = "";
+        do {
+            response = await axios.get(`https://random.dog/woof.json`).then(res => {
+                return res.data.url;
+            })
+            if (response.toLowerCase().endsWith(".jpg") && !dogs.includes(response)) {
+                dogs.push(response);
+            }
+        } while (dogs.length !== (this.props.boardSize[0] * this.props.boardSize[1] * this.props.boardSize[2])/2);
+        const images = this.preloadImages(dogs);
+        console.log("preloadImages: ", images);
+        this.props.newGame(dogs, this.props.boardSize);
+        setTimeout (() => {
+            this.props.allowImages();
+        }, IMAGE_REJECT_TIME);
+    }
+
     componentDidMount() {
-        //740 images available
+        //1694 images available
         if(this.props.imageProvider === 1) {
             axios.get(`https://cataas.com/api/cats?json=true&limit=` + (this.props.boardSize[0] * this.props.boardSize[1] * this.props.boardSize[2])/2)
             .then(res => {
-                let cats = res.data.map(cat => cat.id);
+                let cats = res.data.map(cat => cat._id);
                 let preloadUrls = [];
                 preloadUrls = cats.map(cat => 'https://cataas.com/cat/' + cat);
                 const images = this.preloadImages(preloadUrls);
@@ -97,16 +116,9 @@ class GamePage extends Component {
                 }, IMAGE_REJECT_TIME);
             })
         }
-        //1677 images available
+        //1000 images available
         if(this.props.imageProvider === 2) {
-            this.getData(`https://aws.random.cat/meow`).then(images => {
-                const preloadImages = this.preloadImages(images);
-                console.log("preloadImages: ", preloadImages);
-                this.props.newGame(images, this.props.boardSize);
-                setTimeout (() => {
-                    this.props.allowImages();
-                }, IMAGE_REJECT_TIME);
-            });
+            this.getDogs2();
         }
         //123 images available
         if(this.props.imageProvider === 3) {
@@ -146,7 +158,7 @@ class GamePage extends Component {
                 this.props.allowImages();
             }, IMAGE_REJECT_TIME);
         }
-        //20634 images available
+        //18210 images available
         if(this.props.imageProvider === 5) {
             this.getDogs();
         }
@@ -235,7 +247,7 @@ class GamePage extends Component {
 
     loadingTexts() {
         switch (this.props.imageProvider) {
-            case 1: case 2: case 6:
+            case 1: case 6:
                 if (this.props.imagesLoaded < this.props.boardSize[0] * this.props.boardSize[1] / 4) {
                     return "Cats are ignoring You.";
                 }
@@ -255,7 +267,7 @@ class GamePage extends Component {
 
     loadingImages() {
         switch (this.props.imageProvider) {
-            case 1: case 2: case 6:
+            case 1: case 6:
                 return loadingCats;
             case 3:
                 return loadingFoxes;
